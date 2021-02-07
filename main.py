@@ -64,6 +64,7 @@ class MyVideo(BoxLayout):
             # Save the each resulting frame with dot in local 'images' folder
             if not has_frame:
                 break
+            Path("images").mkdir(parents=True, exist_ok=True)
             cv2.imwrite("images/frame" + str(count) + ".jpg", frame)  # Save frame as JPG file
             count = count + 1
 
