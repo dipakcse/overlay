@@ -1,8 +1,10 @@
+from pathlib import Path
+
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.videoplayer import VideoPlayer
-from pathlib import Path
+import plyer
 import cv2
 import os
 from os.path import isfile, join
@@ -15,6 +17,7 @@ class MyVideo(BoxLayout):
         self.padding = 20
         self.spacing = 20
         # display video to mobile user from local 'videos' folder
+        Path("videos").mkdir(parents=True, exist_ok=True)
         self.player = VideoPlayer(source='videos/sample2.mkv', state='play', options={'allow_stretch': True})
         self.add_widget(self.player)
         # a button to add overlay(dot) inside video
@@ -22,6 +25,7 @@ class MyVideo(BoxLayout):
                              background_color=(0, 1, 0, 1), pos_hint={'x': .3, 'y': .2})
         self.submit.bind(on_release=self.insert_dot)
         self.add_widget(self.submit)
+
 
     def frames_to_video(self, input_path, output_path, fps):
         image_array = []
@@ -72,6 +76,7 @@ class MyVideo(BoxLayout):
         cap.release()
         # convert frames with dot to video and display to the user
         self.frames_to_video("images/", "videos/sample3.mkv", fps)
+
 
 
 class VideoOverlayApp(App):
