@@ -4,7 +4,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.videoplayer import VideoPlayer
-import plyer
+
 import cv2
 import os
 from os.path import isfile, join
@@ -18,7 +18,7 @@ class MyVideo(BoxLayout):
         self.spacing = 20
         # display video to mobile user from local 'videos' folder
         Path("videos").mkdir(parents=True, exist_ok=True)
-        self.player = VideoPlayer(source='videos/sample2.mkv', state='play', options={'allow_stretch': True})
+        self.player = VideoPlayer(source='videos/sample2.mp4', state='play', options={'allow_stretch': True})
         self.add_widget(self.player)
         # a button to add overlay(dot) inside video
         self.submit = Button(text="Insert Overlay", size=(200, 50), size_hint=(None, None),
@@ -44,7 +44,10 @@ class MyVideo(BoxLayout):
 
     def insert_dot(self, instance):
         # read displayed video
-        cap = cv2.VideoCapture(self.player.source)
+        try:
+            cap = cv2.VideoCapture('videos/sample2.mp4')
+        except Exception as e:
+            print("Oops!",e)
         fps = cap.get(cv2.CAP_PROP_FPS)
         x = int((self.player.width / 2) - 50)
         y = int((self.player.height / 2) - 50)
@@ -59,7 +62,7 @@ class MyVideo(BoxLayout):
             # inserting a dot on each frame
             cv2.putText(frame,
                         '.',
-                        (x, y),
+                        (250, 181),
                         font, 1,
                         (0, 255, 255),
                         2,
@@ -75,7 +78,7 @@ class MyVideo(BoxLayout):
         # release the cap object
         cap.release()
         # convert frames with dot to video and display to the user
-        self.frames_to_video("images/", "videos/sample3.mkv", fps)
+        self.frames_to_video("images/", "videos/sample3.mp4", fps)
 
 
 
